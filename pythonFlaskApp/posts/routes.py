@@ -67,8 +67,3 @@ def delete_dummy_posts_from(user_1d):
     db.session.commit()
     flash('Dummy posts have been deleted!', 'success')
     return redirect(url_for('main.home'))
-
-
-
-
-

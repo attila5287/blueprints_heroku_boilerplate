@@ -18,19 +18,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
-    def get_reset_token(self, expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
-
-    @staticmethod
-    def verify_reset_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            user_id = s.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
-
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
@@ -44,3 +31,18 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+class PostDemo():
+    ''' create post obj for demo purpose no db backup for these items ''' 
+    date_posted = datetime.utcnow().date()
+    user_id = '00'
+    author = 'attila'
+
+    def __init__(self, title='demo title', content='demo content'):
+        self.title = title
+        self.content = content
+        print(self)
+
+    def __repr__(self):
+        return f"PostDemo('\n...{self.title}'\n\t '{self.content}')"
